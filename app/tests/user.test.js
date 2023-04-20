@@ -1,15 +1,17 @@
 import assert from "node:assert";
-import { before, describe, it } from "node:test";
+import { afterEach, before, describe, it, mock } from "node:test";
 import request from "supertest";
+import dbClient from "../db-client.js";
 import { setupServer } from "../server.js";
+import userController from "../user/controller.js";
 import userSchema from "../user/model.js";
 
-const sadPath = {
-  username: "mark",
-  password: "west",
-};
-
 describe("User routes", () => {
+  const sadPath = {
+    username: "mark",
+    password: "west",
+  };
+
   let app;
 
   before(() => {
@@ -27,5 +29,28 @@ describe("User routes", () => {
         new RegExp(userSchema.password.isLength.errorMessage)
       );
     });
+  });
+});
+
+describe("User controller", () => {
+  afterEach(() => {
+    mock.reset();
+  });
+
+  it("should throw an error if the user already exists", async () => {
+    const sadPath = {
+      username: "existingUser",
+      password: "password",
+    };
+
+    mock.method(dbClient, "exists", async () => {
+      return 1;
+    });
+
+    try {
+      await userController.registerUser(sadPath);
+    } catch (error) {
+      assert.equal(error.message, "User already exists");
+    }
   });
 });
