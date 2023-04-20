@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkSchema, validationResult } from "express-validator";
-import user from "./model.js";
+import userSchema from "./model.js";
 import { generateValidationErrorMessage } from "../utils.js";
 import userController from "./controller.js";
 
@@ -9,7 +9,7 @@ const router = new Router();
 router.post(
   "/register",
   // Express provides the req, res, and next arguments to middleware functions.
-  checkSchema(user.validationSchema, ["body"]),
+  checkSchema(userSchema, ["body"]),
   (req, res, next) => {
     const reqValidationErrors = validationResult(req);
 
