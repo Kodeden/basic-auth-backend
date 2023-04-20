@@ -1,4 +1,5 @@
-import { Schema } from "redis-om";
+import { Repository, Schema } from "redis-om";
+import dbClient from "../db-client.js";
 
 class UserModel {
   constructor() {
@@ -14,6 +15,8 @@ class UserModel {
       },
     });
 
+    this.repository = new Repository(dbClient, this.schema);
+
     this.validationSchema = {
       password: {
         isLength: {
@@ -25,5 +28,4 @@ class UserModel {
   }
 }
 
-const userModel = new UserModel();
-export default userModel;
+export default new UserModel();

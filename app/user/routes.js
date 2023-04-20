@@ -1,17 +1,18 @@
 import { Router } from "express";
 import { checkSchema, validationResult } from "express-validator";
+import user from "./model.js";
 import { generateValidationErrorMessage } from "../utils.js";
 import userController from "./controller.js";
-import userModel from "./model.js";
 
 const router = new Router();
 
 router.post(
   "/register",
   // Express provides the req, res, and next arguments to middleware functions.
-  checkSchema(userModel.validationSchema, ["body"]),
+  checkSchema(user.validationSchema, ["body"]),
   (req, res, next) => {
     const reqValidationErrors = validationResult(req);
+
     if (reqValidationErrors.isEmpty()) {
       userController
         .registerUser(req.body)
