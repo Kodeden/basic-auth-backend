@@ -7,11 +7,6 @@ import userController from "../user/controller.js";
 import userSchema from "../user/model.js";
 
 describe("User routes", () => {
-  const sadPath = {
-    username: "mark",
-    password: "west",
-  };
-
   let app;
 
   before(() => {
@@ -20,6 +15,11 @@ describe("User routes", () => {
 
   describe("POST /users/register", () => {
     it("should return a '400' with an appropriate error message if the password is too short", async () => {
+      const sadPath = {
+        username: "mark",
+        password: "west",
+      };
+
       const response = await request(app).post("/users/register").send(sadPath);
 
       assert.equal(response.status, 400);
