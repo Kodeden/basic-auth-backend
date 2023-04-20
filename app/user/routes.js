@@ -16,8 +16,8 @@ router.post(
     if (reqValidationErrors.isEmpty()) {
       userController
         .registerUser(req.body)
-        .then(() => {
-          res.json({ message: `User registered ${req.body.username}` });
+        .then((token) => {
+          res.json({ token });
         })
         .catch((err) => {
           next(err);

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import config from "../config.js";
 import dbClient from "../db-client.js";
+import { encodeToken } from "../utils.js";
 
 export default {
   async registerUser(newUser) {
@@ -17,6 +18,8 @@ export default {
       password: await bcrypt.hash(password, config.saltRounds),
     };
 
-    return dbClient.hSet(username, newUserWithEncryptedPassword);
+    await dbClient.hSet(username, newUserWithEncryptedPassword);
+
+    return encodeToken({ username });
   },
 };
