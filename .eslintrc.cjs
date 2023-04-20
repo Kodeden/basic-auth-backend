@@ -10,11 +10,11 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
-        "no-console":[
+    "no-console": [
       "warn",
       {
-               "allow": ["error", "info", "table", "warn"]
-      }
+        allow: ["error", "info", "table", "warn"],
+      },
     ],
   },
 };
