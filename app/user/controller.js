@@ -7,9 +7,9 @@ export default {
   async registerUser(newUser) {
     const { username, password } = newUser;
 
-    const existingUser = await dbClient.exists(username);
+    const isExistingUser = await dbClient.exists(username);
 
-    if (existingUser) {
+    if (isExistingUser) {
       throw new Error("User already exists");
     }
 
