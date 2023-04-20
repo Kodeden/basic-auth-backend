@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { before, describe, it } from "node:test";
 import request from "supertest";
 import { setupServer } from "../server.js";
-import userSchema from "../user/model.js";
+import userModel from "../user/model.js";
 
 const sadPath = {
   username: "mark",
@@ -24,7 +24,7 @@ describe("User routes", () => {
       // Does the error message contains the expected keywords from the schema?
       assert.match(
         response.body.error,
-        new RegExp(userSchema.password.isLength.errorMessage)
+        new RegExp(userModel.validationSchema.password.isLength.errorMessage)
       );
     });
   });
