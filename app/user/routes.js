@@ -19,8 +19,8 @@ router.post(
   }
 );
 
-// router.post("/login", validateBody(userSchema), (req, res) => {
-//   res.json({ message: "User logged in" });
-// });
+router.post("/login", (req, res) => {
+  res.json({ message: "User logged in" });
+});
 
 export default router;
