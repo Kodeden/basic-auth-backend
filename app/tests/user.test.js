@@ -53,4 +53,23 @@ describe("User controller", () => {
       assert.equal(error.message, "User already exists");
     }
   });
+
+  it("should successfully register the user", async () => {
+    const happyPath = {
+      username: "newUser",
+      password: "password",
+    };
+
+    mock.method(dbClient, "exists", async () => {
+      return 0;
+    });
+
+    mock.method(dbClient, "hSet", async () => {
+      return 2;
+    });
+
+    const token = await userController.registerUser(happyPath);
+
+    assert.match(token, /^[\w-]+\.[\w-]+\.[\w-]+$/);
+  });
 });
