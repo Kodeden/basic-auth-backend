@@ -22,4 +22,20 @@ export default {
 
     return encodeToken({ username });
   },
+
+  async login(credentials) {
+    const { username, password } = credentials;
+
+    const existingUser = await dbClient.hGetAll(username);
+
+    const isCorrectPassword =
+      existingUser.password &&
+      (await bcrypt.compare(password, existingUser.password));
+
+    if (!existingUser || !isCorrectPassword) {
+      throw new Error("Invalid credentials");
+    }
+
+    return encodeToken({ username });
+  },
 };

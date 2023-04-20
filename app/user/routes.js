@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { checkSchema, validationResult } from "express-validator";
-import userSchema from "./model.js";
 import { generateValidationErrorMessage } from "../utils.js";
 import userController from "./controller.js";
+import userSchema from "./model.js";
 
 const router = new Router();
 
@@ -29,8 +29,15 @@ router.post(
   }
 );
 
-router.post("/login", (req, res) => {
-  res.json({ message: "User logged in" });
+router.post("/login", (req, res, next) => {
+  userController
+    .login(req.body)
+    .then((token) => {
+      res.json({ token });
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 export default router;
