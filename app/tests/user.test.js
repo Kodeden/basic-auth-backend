@@ -6,6 +6,17 @@ import { setupServer } from "../server.js";
 import userController from "../user/controller.js";
 import userSchema from "../user/model.js";
 
+// Defaults to happy :) path
+function setUpDBClientMocks(existsReturnValue = 0, hSetReturnValue = 2) {
+  mock.method(dbClient, "exists", async () => {
+    return existsReturnValue;
+  });
+
+  mock.method(dbClient, "hSet", async () => {
+    return hSetReturnValue;
+  });
+}
+
 describe("User", () => {
   afterEach(() => {
     mock.reset();
@@ -20,13 +31,7 @@ describe("User", () => {
 
     describe("POST /users/register", () => {
       it("should return a '201' and a token if the user is successfully registered", async () => {
-        mock.method(dbClient, "exists", async () => {
-          return 0;
-        });
-
-        mock.method(dbClient, "hSet", async () => {
-          return 2;
-        });
+        setUpDBClientMocks();
 
         const happyPath = {
           username: "newRouteUser",
@@ -63,13 +68,7 @@ describe("User", () => {
 
   describe("User controller", () => {
     it("should successfully register the user", async () => {
-      mock.method(dbClient, "exists", async () => {
-        return 0;
-      });
-
-      mock.method(dbClient, "hSet", async () => {
-        return 2;
-      });
+      setUpDBClientMocks();
 
       const happyPath = {
         username: "newControllerUser",
@@ -82,9 +81,7 @@ describe("User", () => {
     });
 
     it("should throw an error if the user already exists", async () => {
-      mock.method(dbClient, "exists", async () => {
-        return 1;
-      });
+      setUpDBClientMocks(1);
 
       const sadPath = {
         username: "existingUser",
