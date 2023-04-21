@@ -6,70 +6,96 @@ import { setupServer } from "../server.js";
 import userController from "../user/controller.js";
 import userSchema from "../user/model.js";
 
-describe("User routes", () => {
-  let app;
-
-  before(() => {
-    app = setupServer();
-  });
-
-  describe("POST /users/register", () => {
-    it("should return a '400' with an appropriate error message if the password is too short", async () => {
-      const sadPath = {
-        username: "mark",
-        password: "west",
-      };
-
-      const response = await request(app).post("/users/register").send(sadPath);
-
-      assert.equal(response.status, 400);
-      // Does the error message contains the expected keywords from the schema?
-      assert.match(
-        response.body.error,
-        new RegExp(userSchema.password.isLength.errorMessage)
-      );
-    });
-  });
-});
-
-describe("User controller", () => {
+describe("User", () => {
   afterEach(() => {
     mock.reset();
   });
 
-  it("should throw an error if the user already exists", async () => {
-    const sadPath = {
-      username: "existingUser",
-      password: "password",
-    };
+  describe("User routes", () => {
+    let app;
 
-    mock.method(dbClient, "exists", async () => {
-      return 1;
+    before(() => {
+      app = setupServer();
     });
 
-    try {
-      await userController.registerUser(sadPath);
-    } catch (error) {
-      assert.equal(error.message, "User already exists");
-    }
+    describe("POST /users/register", () => {
+      it("should return a '201' and a token if the user is successfully registered", async () => {
+        mock.method(dbClient, "exists", async () => {
+          return 0;
+        });
+
+        mock.method(dbClient, "hSet", async () => {
+          return 2;
+        });
+
+        const happyPath = {
+          username: "newRouteUser",
+          password: "password",
+        };
+
+        const response = await request(app)
+          .post("/users/register")
+          .send(happyPath);
+
+        assert.equal(response.status, 201);
+        assert.match(response.body.token, /^[\w-]+\.[\w-]+\.[\w-]+$/);
+      });
+
+      it("should return a '400' with an appropriate error message if the password is too short", async () => {
+        const sadPath = {
+          username: "mark",
+          password: "west",
+        };
+
+        const response = await request(app)
+          .post("/users/register")
+          .send(sadPath);
+
+        assert.equal(response.status, 400);
+        // Does the error message contains the expected keywords from the schema?
+        assert.match(
+          response.body.error,
+          new RegExp(userSchema.password.isLength.errorMessage)
+        );
+      });
+    });
   });
 
-  it("should successfully register the user", async () => {
-    const happyPath = {
-      username: "newUser",
-      password: "password",
-    };
+  describe("User controller", () => {
+    it("should successfully register the user", async () => {
+      mock.method(dbClient, "exists", async () => {
+        return 0;
+      });
 
-    mock.method(dbClient, "exists", async () => {
-      return 0;
+      mock.method(dbClient, "hSet", async () => {
+        return 2;
+      });
+
+      const happyPath = {
+        username: "newControllerUser",
+        password: "password",
+      };
+
+      const token = await userController.registerUser(happyPath);
+
+      assert.match(token, /^[\w-]+\.[\w-]+\.[\w-]+$/);
     });
 
-    mock.method(dbClient, "hSet", async () => {
-      return 2;
+    it("should throw an error if the user already exists", async () => {
+      mock.method(dbClient, "exists", async () => {
+        return 1;
+      });
+
+      const sadPath = {
+        username: "existingUser",
+        password: "password",
+      };
+
+      try {
+        await userController.registerUser(sadPath);
+      } catch (error) {
+        assert.equal(error.message, "User already exists");
+      }
     });
-
-    const token = await userController.registerUser(happyPath);
-
-    assert.match(token, /^[\w-]+\.[\w-]+\.[\w-]+$/);
   });
 });
