@@ -18,15 +18,24 @@ export default {
       password: await bcrypt.hash(password, config.saltRounds),
     };
 
-    await dbClient.hSet(username, newUserWithEncryptedPassword);
+    const numOfFieldsAdded = await dbClient.hSet(
+      username,
+      newUserWithEncryptedPassword
+    );
+
+    if (numOfFieldsAdded !== 2) {
+      // TODO: Extend `Error` to account for 500 errors.
+      throw new Error("Failed to register user 🤷🏾‍♀️.");
+    }
 
     return encodeToken({ username });
   },
 
-  async login(credentials) {
+  async loginUser(credentials) {
     const { username, password } = credentials;
 
     const existingUser = await dbClient.hGetAll(username);
+    console.log(existingUser);
 
     const isCorrectPassword =
       existingUser.password &&
