@@ -45,7 +45,7 @@ describe("User", () => {
 
       it("should return a '400' with an appropriate error message if the password is too short", async () => {
         const sadPath = {
-          username: "mark",
+          username: "too-short",
           password: "west",
         };
 
@@ -75,7 +75,7 @@ describe("User", () => {
         });
 
         const happyPath = {
-          username: "existingUser",
+          username: "existingUser200",
           password: "password",
         };
 
@@ -141,7 +141,7 @@ describe("User", () => {
         });
 
         const sadPath = {
-          username: "existingUser",
+          username: "existingUserError",
           password: "password",
         };
 
@@ -160,7 +160,7 @@ describe("User", () => {
 
       it("should successfully log the user in", async () => {
         const happyPath = {
-          username: "existingUser",
+          username: "log-me-in",
           password: "password",
         };
 
@@ -181,7 +181,7 @@ describe("User", () => {
         });
 
         const sadPath = {
-          username: "nonExistingUser",
+          username: "nonExistingControllerUser",
           password: "password",
         };
 
@@ -194,7 +194,7 @@ describe("User", () => {
 
       it("should throw an error if the password is wrong", async () => {
         const sadPath = {
-          username: "existingUser",
+          username: "badPassword",
           password: "wrongPassword",
         };
 
