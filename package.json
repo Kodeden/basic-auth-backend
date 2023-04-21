@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dep-graph": "depcruise --exclude \"^node_modules\" --output-type dot app | dot -T svg > dependency-graph.svg",
-    "test": "node --test"
+    "test": "node --test --watch 'app/tests/'"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
