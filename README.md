@@ -6,7 +6,9 @@ This uses Redis to store the username and password. It is a very simple example 
 
 ```bash
 brew install redis
-redis-server
+
+# Start Redis and use the provided configuration file
+redis-server ./redis.conf
 ```
 
 ❗ Leave this 🏃🏾‍♂️ running in a separate terminal window. With [Warp terminal](https://www.warp.dev/), you can use `⌘T` to open a new tab.
