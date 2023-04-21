@@ -35,7 +35,6 @@ export default {
     const { username, password } = credentials;
 
     const existingUser = await dbClient.hGetAll(username);
-    console.log(existingUser);
 
     const isCorrectPassword =
       existingUser.password &&
