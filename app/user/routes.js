@@ -17,7 +17,7 @@ router.post(
       userController
         .registerUser(req.body)
         .then((token) => {
-          res.json({ token });
+          res.status(201).json({ token });
         })
         .catch((err) => {
           next(err);
@@ -31,7 +31,7 @@ router.post(
 
 router.post("/login", (req, res, next) => {
   userController
-    .login(req.body)
+    .loginUser(req.body)
     .then((token) => {
       res.json({ token });
     })
