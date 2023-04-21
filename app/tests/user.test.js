@@ -7,7 +7,11 @@ import userController from "../user/controller.js";
 import userSchema from "../user/model.js";
 
 // Defaults to happy :) path
-function setUpDBClientMocks(existsReturnValue = 0, hSetReturnValue = 2) {
+function setUpDBClientMocks({
+  existsReturnValue = 0,
+  hSetReturnValue = 2,
+  hGetAllReturnValue = { username: "success" },
+} = {}) {
   mock.method(dbClient, "exists", async () => {
     return existsReturnValue;
   });
@@ -64,6 +68,8 @@ describe("User", () => {
         );
       });
     });
+
+    describe("POST /users/login", () => {});
   });
 
   describe("User controller", () => {
@@ -81,7 +87,7 @@ describe("User", () => {
     });
 
     it("should throw an error if the user already exists", async () => {
-      setUpDBClientMocks(1);
+      setUpDBClientMocks({ existsReturnValue: 1 });
 
       const sadPath = {
         username: "existingUser",
