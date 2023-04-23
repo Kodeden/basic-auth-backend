@@ -27,6 +27,13 @@ npm install
 node app/index.js
 ```
 
+If all is well, you should see:
+
+```bash
+Server 🏃🏾‍♂️ at:  http://localhost:3000
+Connected to Redis
+```
+
 Again, do this in a separate terminal window. We need Redis running to have a database for this Node/Express server to talk to.
 
 Furthermore, you'll need additional terminal windows to run whatever front-ends, etc.
