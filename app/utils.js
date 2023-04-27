@@ -17,3 +17,11 @@ export const generateValidationErrorMessage = (validationErrors) => {
     )
     .join();
 };
+
+export const validateToken = (token) => {
+  try {
+    return jwt.verify(token, config.jwt.secret);
+  } catch (error) {
+    return false;
+  }
+};

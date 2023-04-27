@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkSchema, validationResult } from "express-validator";
-import { generateValidationErrorMessage } from "../utils.js";
+import { generateValidationErrorMessage, validateToken } from "../utils.js";
 import userController from "./controller.js";
 import userSchema from "./model.js";
 
@@ -38,6 +38,17 @@ router.post("/login", (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+});
+
+router.post("/verify", (req, res) => {
+  const { token } = req.body;
+  const decodedToken = validateToken(token);
+
+  if (decodedToken) {
+    res.json({ valid: true });
+  } else {
+    res.status(401).json({ valid: false });
+  }
 });
 
 export default router;
