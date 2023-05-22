@@ -3,7 +3,7 @@ import config from "./config.js";
 
 function generateErrorInfoDetailsIfNotPassword(error) {
   return error.path.includes("password")
-    ? null
+    ? ""
     : `${error.path} had a value of '${error.value}.`;
 }
 
