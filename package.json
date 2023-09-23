@@ -9,15 +9,15 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
     "@babel/plugin-syntax-import-assertions": "^7.20.0",
-    "dependency-cruiser": "^12.5.1",
+    "dependency-cruiser": "^13.1.5",
     "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-xo": "^0.43.1",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-n": "^16.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "prettier": "^2.7.1",
+    "prettier": "2.8.8",
     "supertest": "^6.3.3"
   },
   "dependencies": {
